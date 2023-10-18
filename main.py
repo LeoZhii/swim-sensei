@@ -1,21 +1,30 @@
 import discord
+from discord import app_commands
+from discord.ext import commands
 from keep_alive import keep_alive
 from secret import TOKEN
 import webscrape
 
-intents = discord.Intents().all()
-client = discord.Client(intents=intents)
+# OUTDATED
+# intents = discord.Intents().all()
+# client = discord.Client(intents=intents)
+bot = commands.Bot(command_prefix="?", intents=discord.Intents.all())
 webscrape.update()
 
 
-@client.event
+@bot.event
 async def on_ready():
-  print("We have logged in as {0.user}".format(client))
+  print("We have logged in as {0.user}".format(bot))
+  try:
+    synced = await bot.tree.sync()
+    print(f"Synced {len(synced)} commands.")
+  except Exception as e:
+    print(e)
 
 
-@client.event
+@bot.event
 async def on_message(message):
-  if message.author == client.user:
+  if message.author == bot.user:
     return
 
   if message.content.startswith("?"):
@@ -63,7 +72,45 @@ async def on_message(message):
       )
 
 
-# keep discord bot online
-keep_alive()
+# slash command for best time
+@bot.tree.command(name="besttime",
+                  description="Get the best time for a swimmer")
+async def besttime(interaction: discord.Interaction, swimmer: str,
+                   distance: str, stroke: str):
+  message = findbest(swimmer, distance, stroke)
+  await interaction.response.send_message(message)
 
-client.run(TOKEN)
+
+# function that finds the best times of a swimmer
+def findbest(swimmer, distance, stroke):
+  messages = []
+  delimiter = ""
+
+  # check if name exists:
+  name, id = webscrape.name_match(webscrape.swimmer_ID, swimmer)
+  if id == None:
+    return (f'I cannot find times for {name}. Please try again!')
+
+  # open file
+  file = open(f"{id}.csv")
+  found = False
+  messages.append(f"{name}'s best times:\n")
+
+  # iterate through file of best times
+  for line in file:
+    event = line.split(",")
+    if distance in event[0] and stroke in event[0].lower():
+      found = True
+      messages.append(line.replace(",", " | "))
+
+  if found is False:
+    return (
+      f"I cannot find a time for {name} swimming {distance} {stroke}. Sorry!")
+
+  return delimiter.join(messages)
+
+
+# keep discord bot online
+# keep_alive()
+
+bot.run(TOKEN)
