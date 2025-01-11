@@ -1,15 +1,16 @@
 import discord
 from discord import app_commands
 from discord.ext import commands
-from keep_alive import keep_alive
-from secret import TOKEN
+from dotenv import load_dotenv
+import os
 import webscrape
 
-# OUTDATED
-# intents = discord.Intents().all()
-# client = discord.Client(intents=intents)
 bot = commands.Bot(command_prefix="?", intents=discord.Intents.all())
-webscrape.update()
+load_dotenv()
+
+app_id = os.getenv("APP_ID")
+discord_token = os.getenv("DISCORD_TOKEN")
+public_key = os.getenv("PUBLIC_KEY")
 
 
 @bot.event
