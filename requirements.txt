@@ -1,0 +1,10 @@
+# requirements.txt
+# Python version: 3.12
+discord.py
+python-dotenv
+beautifulsoup4
+requests
+lxml
+table2ascii
+pillow
+regex
