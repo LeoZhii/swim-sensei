@@ -3,3 +3,5 @@ venv
 data/
 /__pycache__
 /commands/__pycache__
+SwimSenseiKeyPair.pem
+ssc-scp-commands.txt

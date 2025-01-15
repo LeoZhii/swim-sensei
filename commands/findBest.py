@@ -53,4 +53,4 @@ async def setup(bot, swimmer_data):
             body=results,
             style=PresetStyle.thin_compact
         )
-        await interaction.response.send_message(f"```\n{output}\n```", ephemeral=True)
+        await interaction.response.send_message(f"```\n{swimmer}'s {distance} {stroke} times:\n{output}\n```", ephemeral=True)
