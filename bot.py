@@ -22,9 +22,9 @@ swimmer_data = load_swimmer_data(SWIMMER_DATA_FILE)
 
 @bot.event
 async def on_ready():
-    print(f"We have logged in as {bot.user}")
-    print("Syncing Commands...")
+    print(f"We have logged in as {bot.user}",flush=True)
+    print("Syncing Commands...", flush=True)
     await load_commands(bot, swimmer_data)
-    print("Commands Successfully Synced.")
+    print("Commands Successfully Synced. Ready for inputs",flush=True)
 
 bot.run(discord_token)

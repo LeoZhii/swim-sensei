@@ -49,8 +49,9 @@ async def setup(bot, swimmer_data):
             return
 
         output = t2a(
-            header=["Course", "Time", "Points", "Date"],
+            header=["Course", "Time", "Pts", "Date"],
             body=results,
             style=PresetStyle.thin_compact
         )
+        print(f"\nREQUEST BY: {interaction.user.display_name}: find best {swimmer} {distance} {stroke}\n {output}", flush=True)
         await interaction.response.send_message(f"```\n{swimmer}'s {distance} {stroke} times:\n{output}\n```", ephemeral=True)
