@@ -1,0 +1,9 @@
+.env
+venv
+data/
+/__pycache__
+/commands/__pycache__
+.idea
+SwimSenseiKeyPair.pem
+.DS_store
+ssh-scp-commands.txt
